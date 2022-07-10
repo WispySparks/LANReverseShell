@@ -3,9 +3,8 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 print("Socket Created")
 sock.settimeout(5)
 ip = socket.gethostbyname(socket.gethostname())
-# ip = "10.0.1.12"
 ip = "localhost"
-port = 4834
+port = 17340
 print("Attempting Connection at " + ip + ", Port: " + str(port))
 connection = sock.connect_ex((ip, port))
 if (connection == 0):
