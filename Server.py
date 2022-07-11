@@ -65,7 +65,7 @@ def commandHandler(client: socket.socket):
         client.send("Command".encode())
         command: str = client.recv(1024).decode().strip()
         if (command.startswith(privateKey)):
-            command.removeprefix(privateKey)
+            command = command.removeprefix(privateKey + " ")
             if (command == "Finish"):
                 finished = True
             if (not finished):

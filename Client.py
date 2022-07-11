@@ -15,7 +15,7 @@ if (connection == 0):
             msgBuffer = sock.recv(4096)
             if (msgBuffer.decode() == "Command"):
                 command = input("Input Command: ").strip()
-                sock.send((privateKey + command).encode())
+                sock.send((privateKey + " " + command).encode())
             elif (msgBuffer):
                 print(msgBuffer.decode())
                 if (msgBuffer.decode() == "Connection Closed"):
