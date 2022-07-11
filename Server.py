@@ -73,7 +73,7 @@ def commandHandler(client: socket.socket):
                 if (running):
                     commandHandler(client)
         else:
-            client.send("Invalid Key")
+            client.send("Invalid Key".encode())
     except:
         print("Connection Interrupted")
         pass
@@ -107,9 +107,9 @@ def runCommand(command: str, client: socket.socket):
                 line = process.stdout.readline()
                 if not line:
                     break
-                time.sleep(0.0002)
+                time.sleep(0.01)
                 client.send(line.strip())
-            client.send("Errors: ".encode() )
+            client.send("\nErrors: ".encode() )
             while True:
                 line = process.stderr.readline()
                 if not line:
