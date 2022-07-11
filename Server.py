@@ -60,7 +60,7 @@ def clientConnect():
 def commandHandler(client: socket.socket):
     global finished
     try:
-        client.send(("\nCurrent Directory: " + os.getcwd()).encode())
+        client.send(("\n\nCurrent Directory: " + os.getcwd()).encode())
         time.sleep(.25)
         client.send("Command".encode())
         command: str = client.recv(1024).decode().strip()
@@ -107,7 +107,7 @@ def runCommand(command: str, client: socket.socket):
                 line = process.stdout.readline()
                 if not line:
                     break
-                time.sleep(0.01)
+                time.sleep(0.001)
                 client.send(line.strip())
             client.send("\nErrors: ".encode() )
             while True:
