@@ -102,7 +102,7 @@ def runCommand(command: str, client):
                 line = process.stdout.readline()
                 if not line:
                     break
-                time.sleep(0.0001)
+                time.sleep(0.0002)
                 client.send(line.strip())
             client.send("Errors: ".encode() )
             while True:

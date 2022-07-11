@@ -1,9 +1,9 @@
 import socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 print("Socket Created")
-sock.settimeout(5)
-ip = socket.gethostbyname(socket.gethostname())
-ip = "localhost"
+sock.settimeout(15)
+ip = socket.gethostbyname("A-COMPUTER")
+# ip = "192.168.0.18"
 port = 17340
 print("Attempting Connection at " + ip + ", Port: " + str(port))
 connection = sock.connect_ex((ip, port))
