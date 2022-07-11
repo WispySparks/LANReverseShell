@@ -107,8 +107,9 @@ def runCommand(command: str, client: socket.socket):
                 line = process.stdout.readline()
                 if not line:
                     break
+                print(line)
                 time.sleep(0.001)
-                client.send(line.strip())
+                client.send(line)
             client.send("\nErrors: ".encode() )
             while True:
                 line = process.stderr.readline()
