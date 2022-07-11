@@ -1,4 +1,5 @@
 import socket
+privateKey: str = "?!(asLK03,,yB/["
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 print("Socket Created")
 sock.settimeout(15)
@@ -14,7 +15,7 @@ if (connection == 0):
             msgBuffer = sock.recv(4096)
             if (msgBuffer.decode() == "Command"):
                 command = input("Input Command: ").strip()
-                sock.send(command.encode())
+                sock.send((privateKey + command).encode())
             elif (msgBuffer):
                 print(msgBuffer.decode())
                 if (msgBuffer.decode() == "Connection Closed"):

